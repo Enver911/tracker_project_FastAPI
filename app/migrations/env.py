@@ -8,6 +8,7 @@ from alembic import context
 from backend.db import Base
 from models.board import Board
 from models.column import Column
+from models.card import Card
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

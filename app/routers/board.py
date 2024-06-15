@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi import HTTPException, status
 
-from schemas.board import BoardSchema
+from schemas.board import BoardSchemaRead, BoardSchemaUpdate
 from models.board import Board
 
 from backend.db_depends import get_session
@@ -16,34 +16,34 @@ router = APIRouter(tags=["Board"])
 
 
 @router.get("/boards")
-async def get_board_list(session: Annotated[Session, Depends(get_session)]) -> list[BoardSchema]:
+async def get_board_list(session: Annotated[Session, Depends(get_session)]) -> list[BoardSchemaRead]:
     instances = session.scalars(select(Board)).all()
-    return [BoardSchema.from_model(instance) for instance in instances]
+    return [instance.to_schema() for instance in instances]
 
 
 @router.post("/boards")
-async def add_board(session: Annotated[Session, Depends(get_session)], board_schema: BoardSchema) -> BoardSchema:
+async def add_board(session: Annotated[Session, Depends(get_session)], board_schema: BoardSchemaUpdate) -> BoardSchemaRead:
     data = board_schema.model_dump(exclude="id")
     instance = Board(**data)
     
     session.add(instance)
     session.commit()
 
-    return BoardSchema.from_model(instance)
+    return instance.to_schema()
 
 
 @router.get("/boards/{board_id}")
-async def get_board(board_id: int, session: Annotated[Session, Depends(get_session)]) -> BoardSchema:
+async def get_board(board_id: int, session: Annotated[Session, Depends(get_session)]) -> BoardSchemaRead:
     instance = session.scalar(select(Board).where(Board.id==board_id))
     
     if instance is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query") 
     
-    return BoardSchema.from_model(instance)
+    return instance.to_schema()
     
     
 @router.put("/boards/{board_id}")
-async def set_board(board_id: int, session: Annotated[Session, Depends(get_session)], board_schema: BoardSchema) -> BoardSchema:
+async def set_board(board_id: int, session: Annotated[Session, Depends(get_session)], board_schema: BoardSchemaUpdate) -> BoardSchemaRead:
     instance = session.scalar(select(Board).where(Board.id==board_id))
     
     if instance is None:
@@ -54,11 +54,11 @@ async def set_board(board_id: int, session: Annotated[Session, Depends(get_sessi
     session.add(instance)
     session.commit()
 
-    return BoardSchema.from_model(instance)
+    return instance.to_schema()
 
 
 @router.delete("/boards/{board_id}")
-async def delete_board(board_id: int, session: Annotated[Session, Depends(get_session)]) -> BoardSchema:
+async def delete_board(board_id: int, session: Annotated[Session, Depends(get_session)]) -> BoardSchemaRead:
     instance = session.scalar(select(Board).where(Board.id==board_id))
     
     if instance is None:
@@ -67,6 +67,6 @@ async def delete_board(board_id: int, session: Annotated[Session, Depends(get_se
     session.execute(delete(Board).where(Board.id==board_id))
     session.commit()
     
-    return BoardSchema.from_model(instance)
+    return instance.to_schema()
 
 

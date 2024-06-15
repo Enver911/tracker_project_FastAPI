@@ -1,16 +1,11 @@
 from pydantic import BaseModel, Field
-from sqlalchemy import inspect
+from schemas.card import CardSchemaRead
 
 
-class ColumnSchema(BaseModel):
+class ColumnSchemaUpdate(BaseModel):
+    title: str | None = Field(max_length=100, default="No name")
+          
+class ColumnSchemaRead(ColumnSchemaUpdate):
     id: int | None = None
     board_id: int | None = None
-    title: str | None = Field(default="No name")
-    
-    @classmethod
-    def from_model(cls, instance):
-        return cls(**{attr.key: attr.value for attr in inspect(instance).attrs})
-            
-        
-
-    
+    cards: list[CardSchemaRead]
