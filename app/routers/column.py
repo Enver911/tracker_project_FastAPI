@@ -15,48 +15,48 @@ from sqlalchemy import select, delete
 router = APIRouter(tags=["Column"])
 
 @router.get("/boards/{board_id}/columns")
-async def get_board_list(board_id: int, session: Annotated[Session, Depends(get_session)]): #-> list[ColumnSchemaRead]:""" 
+async def get_column_list(board_id: int, session: Annotated[Session, Depends(get_session)])-> list[ColumnSchemaRead]: 
     instances = session.scalars(select(Column).where(Column.board_id==board_id))
-    return [instance.to_schema() for instance in instances]
+    return [ColumnSchemaRead.model_validate(instance, from_attributes=True) for instance in instances]
 
 
 @router.post("/boards/{board_id}/columns")
-async def add_board(board_id: int, session: Annotated[Session, Depends(get_session)], column_schema: ColumnSchemaUpdate): #-> ColumnSchemaRead:
+async def add_column(board_id: int, session: Annotated[Session, Depends(get_session)], column_schema: ColumnSchemaUpdate) -> ColumnSchemaRead:
     instance = Column(board_id=board_id, **dict(column_schema))
     
     session.add(instance)
     session.commit()
     
-    return instance.to_schema()
+    return ColumnSchemaRead.model_validate(instance, from_attributes=True)
     
 
 @router.get("/boards/{board_id}/columns/{column_id}")
-async def get_board(board_id: int, column_id:int, session: Annotated[Session, Depends(get_session)]): #-> ColumnSchemaRead:
+async def get_column(board_id: int, column_id:int, session: Annotated[Session, Depends(get_session)]) -> ColumnSchemaRead:
     instance = session.scalar(select(Column).where(Column.id==column_id))
     
     if instance is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query") 
     
-    return instance.to_schema()
+    return ColumnSchemaRead.model_validate(instance, from_attributes=True)
     
     
 @router.put("/boards/{board_id}/columns/{column_id}")
-async def set_board(board_id: int, column_id: int, session: Annotated[Session, Depends(get_session)], column_schema: ColumnSchemaUpdate): #-> ColumnSchemaRead:
+async def set_column(board_id: int, column_id: int, session: Annotated[Session, Depends(get_session)], column_schema: ColumnSchemaUpdate) -> ColumnSchemaRead:
     instance = session.scalar(select(Column).where(Column.id==column_id))
     
     if instance is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query") 
     
-    instance.set(dict(column_schema))
+    instance.set(column_schema.model_dump(exclude_unset=True))
     
     session.add(instance)
     session.commit()
 
-    return instance.to_schema()
+    return ColumnSchemaRead.model_validate(instance, from_attributes=True)
 
 
 @router.delete("/boards/{board_id}/columns/{column_id}")
-async def delete_board(board_id: int, column_id: int, session: Annotated[Session, Depends(get_session)]): #-> ColumnSchemaRead:
+async def delete_column(board_id: int, column_id: int, session: Annotated[Session, Depends(get_session)]) -> ColumnSchemaRead:
     instance = session.scalar(select(Column).where(Column.id==column_id))
     
     if instance is None:
@@ -65,6 +65,6 @@ async def delete_board(board_id: int, column_id: int, session: Annotated[Session
     session.execute(delete(Column).where(Column.id==column_id))
     session.commit()
     
-    return instance.to_schema()
+    return ColumnSchemaRead.model_validate(instance, from_attributes=True)
 
 

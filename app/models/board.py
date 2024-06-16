@@ -2,7 +2,6 @@ from backend.db import Base
 from sqlalchemy import Column, String, Text, Integer
 from sqlalchemy.orm import relationship
 
-from schemas.board import BoardSchemaRead
 
 class Board(Base):
     __tablename__ = "board" 
@@ -15,5 +14,3 @@ class Board(Base):
     background = Column(String(100), nullable=True)
     
     columns = relationship("Column", back_populates="board")
-    
-    linked_schema = BoardSchemaRead

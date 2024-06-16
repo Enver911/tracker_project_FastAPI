@@ -18,7 +18,7 @@ router = APIRouter(tags=["Board"])
 @router.get("/boards")
 async def get_board_list(session: Annotated[Session, Depends(get_session)]) -> list[BoardSchemaRead]:
     instances = session.scalars(select(Board)).all()
-    return [instance.to_schema() for instance in instances]
+    return [BoardSchemaRead.model_validate(instance, from_attributes=True) for instance in instances]
 
 
 @router.post("/boards")
@@ -29,7 +29,7 @@ async def add_board(session: Annotated[Session, Depends(get_session)], board_sch
     session.add(instance)
     session.commit()
 
-    return instance.to_schema()
+    return BoardSchemaRead.model_validate(instance, from_attributes=True)
 
 
 @router.get("/boards/{board_id}")
@@ -39,7 +39,7 @@ async def get_board(board_id: int, session: Annotated[Session, Depends(get_sessi
     if instance is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query") 
     
-    return instance.to_schema()
+    return BoardSchemaRead.model_validate(instance, from_attributes=True)
     
     
 @router.put("/boards/{board_id}")
@@ -49,12 +49,12 @@ async def set_board(board_id: int, session: Annotated[Session, Depends(get_sessi
     if instance is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query") 
     
-    instance.set(board_schema.model_dump(exclude="id"))
+    instance.set(board_schema.model_dump(exclude="id", exclude_unset=True))
     
     session.add(instance)
     session.commit()
 
-    return instance.to_schema()
+    return BoardSchemaRead.model_validate(instance, from_attributes=True)
 
 
 @router.delete("/boards/{board_id}")
@@ -67,6 +67,6 @@ async def delete_board(board_id: int, session: Annotated[Session, Depends(get_se
     session.execute(delete(Board).where(Board.id==board_id))
     session.commit()
     
-    return instance.to_schema()
+    return BoardSchemaRead.model_validate(instance, from_attributes=True)
 
 

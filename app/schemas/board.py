@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from schemas.column import ColumnSchemaRead
 
 
 class BoardSchemaUpdate(BaseModel):

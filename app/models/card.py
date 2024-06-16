@@ -3,7 +3,6 @@ from sqlalchemy import Column, String, Text, Integer, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
-from schemas.card import CardSchemaRead
 
 class Card(Base):
     __tablename__ = "card" 
@@ -20,6 +19,4 @@ class Card(Base):
     deadline = Column(DateTime, nullable=True)
     
     column = relationship("Column", back_populates="cards")
-    
-    linked_schema = CardSchemaRead
     
