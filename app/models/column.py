@@ -8,7 +8,7 @@ class Column(Base):
     __tablename__ = "column" 
     
     id = Col(Integer, primary_key=True)
-    board_id = Col(Integer, ForeignKey("board.id"))
+    board_id = Col(Integer, ForeignKey("board.id", ondelete="CASCADE"))
     
     title = Col(String(100), default="No name")
     

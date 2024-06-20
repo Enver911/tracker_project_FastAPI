@@ -21,3 +21,10 @@ class UserSchemaRead(BaseModel):
     username: str | None = Field(max_length=30, default=None)
     firstname: str | None = Field(max_length=30, default=None)
     lastname: str | None = Field(max_length=30, default=None)
+    
+class JWT(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    
+    
+    
