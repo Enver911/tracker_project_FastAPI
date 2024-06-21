@@ -11,7 +11,6 @@ from sqlalchemy.orm import Session
 from sqlalchemy import select, delete
 
 
-
 router = APIRouter(tags=["Column"])
 
 @router.get("/boards/{board_id}/columns")

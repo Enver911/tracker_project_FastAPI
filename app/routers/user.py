@@ -1,30 +1,32 @@
 from fastapi import APIRouter, Depends
 from fastapi import HTTPException, status
 
-from schemas.user import UserSchemaCreate, UserSchemaLogin, UserSchemaRead, JWT
+from schemas.user import UserSchemaCreate, UserSchemaRead, UserSchemaPasswordReset, JWT
 from models.user import User
 
 from backend.db_depends import get_session
 from typing import Annotated
 
 from sqlalchemy.orm import Session
-from sqlalchemy import select, delete, or_
+from sqlalchemy import select, or_
 
 from passlib.context import CryptContext
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.security import OAuth2PasswordRequestForm
 
-from datetime import datetime, timedelta
-from jose import jwt, JWTError
+from datetime import datetime
+from jose import jwt
 
 import settings
 
+from authentications.jwt_auth import get_user
+
 
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/login")
+
 router = APIRouter(tags=["User"])
 
 
-@router.post("/users/registration") #add custom validations
+@router.post("/users/registration")
 async def user_registration(session: Annotated[Session, Depends(get_session)], user_schema: UserSchemaCreate) -> UserSchemaRead:
     
     if session.scalar(select(User).where(or_(User.username==user_schema.username, User.email==user_schema.email))): # if user exists 
@@ -40,18 +42,12 @@ async def user_registration(session: Annotated[Session, Depends(get_session)], u
 
 
 @router.post("/users/password_reset")
-async def user_password_reset(session: Annotated[Session, Depends(get_session)], user_schema: UserSchemaLogin) -> UserSchemaRead: 
-    pass
-
-
-@router.post("/users/logout")
-async def user_logout(session: Annotated[Session, Depends(get_session)]) -> UserSchemaRead:
+async def user_password_reset(session: Annotated[Session, Depends(get_session)], user_schema: UserSchemaPasswordReset): 
     pass
 
 
 @router.post("/users/login")
 async def user_login(session: Annotated[Session, Depends(get_session)], credentials: Annotated[OAuth2PasswordRequestForm, Depends()]) -> JWT:
-    
     instance = (session.scalar(select(User).where(User.username==credentials.username)) or
                 session.scalar(select(User).where(User.email==credentials.username)))
     
@@ -65,20 +61,7 @@ async def user_login(session: Annotated[Session, Depends(get_session)], credenti
     return JWT(access_token=token)
 
 
-async def get_user(token: Annotated[str, Depends(oauth2_scheme)]) -> dict:
-    try:
-        user_info = jwt.decode(token=token, key=settings.SECRET_KEY, algorithms=settings.ALGORITHM)
-
-        if datetime.now() > datetime.fromtimestamp(float(user_info.get("expires"))):    
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Token expired")
-        
-    except JWTError:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong token")
-    
-    return user_info
-
-
-@router.get("/users/profile")
-async def some_url(session: Annotated[Session, Depends(get_session)], user_info: dict = Depends(get_user)) -> UserSchemaRead:
+@router.get("/users/profile", dependencies=[Depends(get_user)])
+async def some_url(session: Annotated[Session, Depends(get_session)], user_info: Annotated[dict, Depends(get_user)]) -> UserSchemaRead:
     instance = session.scalar(select(User).where(User.username==user_info["username"]))
     return UserSchemaRead.model_validate(instance, from_attributes=True)

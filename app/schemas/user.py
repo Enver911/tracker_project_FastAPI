@@ -1,13 +1,17 @@
 from pydantic import BaseModel, Field, EmailStr
 
-
+class UserSchemaPasswordReset(BaseModel):
+    email: EmailStr = Field(max_length=30)
+    
 class UserSchemaLogin(BaseModel):
-    username: str | None = Field(max_length=30, default=None)
-    password: str | None = Field(max_length=30, default=None)
+    username: str = Field(max_length=30)
+    password: str = Field(max_length=30)
     
 class UserSchemaCreate(UserSchemaLogin):
-    email: EmailStr | None = Field(max_length=30, default=None)
-
+    email: EmailStr = Field(max_length=30)
+    
+class UserSchemaPublicInfo(BaseModel):
+    username: str = Field(max_length=30)
 
 class UserSchemaUpdate(BaseModel):
     username: str | None = Field(max_length=30, default=None)
@@ -17,8 +21,8 @@ class UserSchemaUpdate(BaseModel):
     password2: str | None = Field(max_length=30, default=None) 
 
 class UserSchemaRead(BaseModel):
-    email: EmailStr | None = Field(max_length=30, default=None)
-    username: str | None = Field(max_length=30, default=None)
+    email: EmailStr = Field(max_length=30)
+    username: str = Field(max_length=30)
     firstname: str | None = Field(max_length=30, default=None)
     lastname: str | None = Field(max_length=30, default=None)
     

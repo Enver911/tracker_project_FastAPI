@@ -6,6 +6,6 @@ class ColumnSchemaUpdate(BaseModel):
     title: str | None = Field(max_length=100, default="No name")
           
 class ColumnSchemaRead(ColumnSchemaUpdate):
-    id: int | None = None
-    board_id: int | None = None
+    id: int
+    board_id: int
     cards: list[CardSchemaRead]

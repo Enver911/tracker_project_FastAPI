@@ -17,5 +17,6 @@ class Board(Base):
     background = Column(String(100), nullable=True)
     
     author = relationship("User", back_populates="boards")
+    followers = relationship("User", secondary=Follower.__table__, back_populates="follows")
     columns = relationship("Column", back_populates="board")
-    followers = relationship("Board", secondary=Follower.__table__, back_populates="follows")
+    

@@ -10,21 +10,33 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 from sqlalchemy import select, delete
 
-
+from authentications.jwt_auth import get_user
+from models.user import User
+from models.follower import Follower
 
 router = APIRouter(tags=["Board"])
 
 
 @router.get("/boards")
-async def get_board_list(session: Annotated[Session, Depends(get_session)]) -> list[BoardSchemaRead]:
-    instances = session.scalars(select(Board)).all()
+async def get_board_list(session: Annotated[Session, Depends(get_session)], user_info: Annotated[dict, Depends(get_user)]) -> list[BoardSchemaRead]:
+
+    
+    user = session.scalar(select(User).where(User.email==user_info["email"]))
+    
+
+    
+    # user.email in (follower.user_email for follower in Board.followers)
+    
+    instances = session.scalars(select(Board).where(Board.author==user))
+    
     return [BoardSchemaRead.model_validate(instance, from_attributes=True) for instance in instances]
 
 
 @router.post("/boards")
-async def add_board(session: Annotated[Session, Depends(get_session)], board_schema: BoardSchemaUpdate) -> BoardSchemaRead:
-    data = board_schema.model_dump(exclude="id")
-    instance = Board(**data)
+async def add_board(session: Annotated[Session, Depends(get_session)], board_schema: BoardSchemaUpdate, user_info: Annotated[dict, Depends(get_user)]) -> BoardSchemaRead:
+    instance = Board(**board_schema.model_dump())
+    user = session.scalar(select(User).where(User.email==user_info["email"]))
+    instance.author = user
     
     session.add(instance)
     session.commit()
@@ -49,7 +61,7 @@ async def set_board(board_id: int, session: Annotated[Session, Depends(get_sessi
     if instance is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query") 
     
-    instance.set(board_schema.model_dump(exclude="id", exclude_unset=True))
+    instance.set(board_schema.model_dump(exclude_unset=True))
     
     session.add(instance)
     session.commit()
