@@ -1,7 +1,5 @@
 from backend.db import Base
 from sqlalchemy import Column, Integer, ForeignKey, String
-from sqlalchemy.orm import relationship
-from sqlalchemy_utils import ChoiceType
 
 
 class Subscriber(Base):

@@ -6,8 +6,6 @@ from sqlalchemy_utils import ChoiceType
 PERMISSIONS = ["reader", "moderator"]
 
 class Follower(Base):
-    
-    
     __tablename__ = "follower"
     
     id = Column(Integer, primary_key=True)

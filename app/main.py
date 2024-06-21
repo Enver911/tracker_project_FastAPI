@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from routers import board, column, card, user, follower
+from routers import board, column, card, user, follower, subscriber
 
 from authentications.jwt_auth import get_user
 
@@ -10,6 +10,7 @@ app.include_router(column.router, dependencies=[Depends(get_user)])
 app.include_router(card.router, dependencies=[Depends(get_user)])
 app.include_router(user.router)
 app.include_router(follower.router, dependencies=[Depends(get_user)])
+app.include_router(subscriber.router, dependencies=[Depends(get_user)])
 
 
 #add followers, subscribers api

@@ -34,7 +34,7 @@ async def get_follower_list(board_id: int, session: Annotated[Session, Depends(g
     board = session.scalar(select(Board).where(Board.id==board_id))
     
     if user in board.followers:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already was added to the board")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already was followed to the board")
     elif user == board.author:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="That user is author of the board")
     

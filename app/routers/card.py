@@ -13,13 +13,13 @@ from sqlalchemy import select, delete
 
 router = APIRouter(tags=["Card"])
 
-@router.get("{board_id}/columns/{column_id}/cards")
+@router.get("/{board_id}/columns/{column_id}/cards")
 async def get_card_list(board_id: int, column_id: int, session: Annotated[Session, Depends(get_session)]) -> list[CardSchemaRead]:
     instances = session.scalars(select(Card).where(Card.column_id==column_id))
     return [CardSchemaRead.model_validate(instance, from_attributes=True) for instance in instances]
 
 
-@router.post("{board_id}/columns/{column_id}/cards")
+@router.post("/{board_id}/columns/{column_id}/cards")
 async def add_card(board_id: int, column_id: int, session: Annotated[Session, Depends(get_session)], card_schema: CardSchemaUpdate) -> CardSchemaRead:
     instance = Card(column_id=column_id, **dict(card_schema))
     
