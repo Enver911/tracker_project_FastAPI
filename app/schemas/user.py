@@ -23,6 +23,7 @@ class UserSchemaUpdate(BaseModel):
 class UserSchemaRead(BaseModel):
     email: EmailStr = Field(max_length=30)
     username: str = Field(max_length=30)
+    avatar: str | None = Field(max_length=100, default=None)
     firstname: str | None = Field(max_length=30, default=None)
     lastname: str | None = Field(max_length=30, default=None)
     

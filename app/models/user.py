@@ -12,6 +12,7 @@ class User(Base):
     
     username = Column(String(30), unique=True)
     password = Column(String(30))
+    avatar = Column(String(100), nullable=True)
     firstname = Column(String(30), nullable=True)
     lastname = Column(String(30), nullable=True)
     is_active = Column(Boolean, default=True)
