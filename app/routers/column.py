@@ -13,13 +13,13 @@ from sqlalchemy import select, delete
 
 router = APIRouter(tags=["Column"])
 
-@router.get("/boards/{board_id}/columns")
+@router.get("/{board_id}/columns")
 async def get_column_list(board_id: int, session: Annotated[Session, Depends(get_session)])-> list[ColumnSchemaRead]: 
     instances = session.scalars(select(Column).where(Column.board_id==board_id))
     return [ColumnSchemaRead.model_validate(instance, from_attributes=True) for instance in instances]
 
 
-@router.post("/boards/{board_id}/columns")
+@router.post("/{board_id}/columns")
 async def add_column(board_id: int, session: Annotated[Session, Depends(get_session)], column_schema: ColumnSchemaUpdate) -> ColumnSchemaRead:
     instance = Column(board_id=board_id, **dict(column_schema))
     
@@ -29,7 +29,7 @@ async def add_column(board_id: int, session: Annotated[Session, Depends(get_sess
     return ColumnSchemaRead.model_validate(instance, from_attributes=True)
     
 
-@router.get("/boards/{board_id}/columns/{column_id}")
+@router.get("/{board_id}/columns/{column_id}")
 async def get_column(board_id: int, column_id:int, session: Annotated[Session, Depends(get_session)]) -> ColumnSchemaRead:
     instance = session.scalar(select(Column).where(Column.id==column_id))
     
@@ -39,7 +39,7 @@ async def get_column(board_id: int, column_id:int, session: Annotated[Session, D
     return ColumnSchemaRead.model_validate(instance, from_attributes=True)
     
     
-@router.put("/boards/{board_id}/columns/{column_id}")
+@router.put("/{board_id}/columns/{column_id}")
 async def set_column(board_id: int, column_id: int, session: Annotated[Session, Depends(get_session)], column_schema: ColumnSchemaUpdate) -> ColumnSchemaRead:
     instance = session.scalar(select(Column).where(Column.id==column_id))
     
@@ -54,7 +54,7 @@ async def set_column(board_id: int, column_id: int, session: Annotated[Session, 
     return ColumnSchemaRead.model_validate(instance, from_attributes=True)
 
 
-@router.delete("/boards/{board_id}/columns/{column_id}")
+@router.delete("/{board_id}/columns/{column_id}")
 async def delete_column(board_id: int, column_id: int, session: Annotated[Session, Depends(get_session)]) -> ColumnSchemaRead:
     instance = session.scalar(select(Column).where(Column.id==column_id))
     

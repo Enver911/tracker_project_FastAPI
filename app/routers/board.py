@@ -19,24 +19,15 @@ router = APIRouter(tags=["Board"])
 
 @router.get("/boards")
 async def get_board_list(session: Annotated[Session, Depends(get_session)], user_info: Annotated[dict, Depends(get_user)]) -> list[BoardSchemaRead]:
-
-    
     user = session.scalar(select(User).where(User.email==user_info["email"]))
-    
-
-    
-    # user.email in (follower.user_email for follower in Board.followers)
-    
-    instances = session.scalars(select(Board).where(Board.author==user))
-    
+    instances = user.boards + user.follows
     return [BoardSchemaRead.model_validate(instance, from_attributes=True) for instance in instances]
 
 
 @router.post("/boards")
 async def add_board(session: Annotated[Session, Depends(get_session)], board_schema: BoardSchemaUpdate, user_info: Annotated[dict, Depends(get_user)]) -> BoardSchemaRead:
     instance = Board(**board_schema.model_dump())
-    user = session.scalar(select(User).where(User.email==user_info["email"]))
-    instance.author = user
+    instance.author_email = user_info["email"]
     
     session.add(instance)
     session.commit()

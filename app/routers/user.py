@@ -40,11 +40,11 @@ async def user_registration(session: Annotated[Session, Depends(get_session)], u
     
     return UserSchemaRead.model_validate(instance, from_attributes=True)
 
-
+"""
 @router.post("/users/password_reset")
 async def user_password_reset(session: Annotated[Session, Depends(get_session)], user_schema: UserSchemaPasswordReset): 
     pass
-
+"""
 
 @router.post("/users/login")
 async def user_login(session: Annotated[Session, Depends(get_session)], credentials: Annotated[OAuth2PasswordRequestForm, Depends()]) -> JWT:
