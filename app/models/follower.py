@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, ForeignKey, String
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import ChoiceType
 
-PERMISSIONS = ["reader", "moderator"]
+PERMISSIONS = {"reader": "reader", "moderator": "moderator"}
 
 class Follower(Base):
     __tablename__ = "follower"
@@ -12,4 +12,4 @@ class Follower(Base):
     user_email = Column(String(30), ForeignKey("user.email", ondelete="CASCADE"))
     board_id = Column(Integer, ForeignKey("board.id", ondelete="CASCADE"))
     
-    permission = Column(String(30), default=PERMISSIONS[0])
+    permission = Column(String(30), default=PERMISSIONS["reader"])

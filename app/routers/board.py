@@ -10,11 +10,13 @@ from typing import Annotated
 from sqlalchemy.orm import Session
 from sqlalchemy import select, delete
 
-from authentications.jwt_auth import get_user
 from models.user import User
 
 import settings
 from utils.media import Media
+
+from permissions.permissions import is_author_or_moderator, is_author
+from authentications.jwt_auth import get_user
 
 
 router = APIRouter(tags=["Board"])
@@ -38,7 +40,7 @@ async def add_board(session: Annotated[Session, Depends(get_session)], board_sch
     return BoardSchemaRead.model_validate(instance, from_attributes=True)
 
 
-@router.get("/boards/{board_id}")
+@router.get("/boards/{board_id}", dependencies=[Depends(is_author_or_moderator)])
 async def get_board(board_id: int, session: Annotated[Session, Depends(get_session)]) -> BoardSchemaRead:
     instance = session.scalar(select(Board).where(Board.id==board_id))
     
@@ -48,7 +50,7 @@ async def get_board(board_id: int, session: Annotated[Session, Depends(get_sessi
     return BoardSchemaRead.model_validate(instance, from_attributes=True)
     
     
-@router.put("/boards/{board_id}")
+@router.put("/boards/{board_id}", dependencies=[Depends(is_author_or_moderator)])
 async def set_board(board_id: int, session: Annotated[Session, Depends(get_session)], board_schema: BoardSchemaUpdate) -> BoardSchemaRead:
     instance = session.scalar(select(Board).where(Board.id==board_id))
     
@@ -63,7 +65,7 @@ async def set_board(board_id: int, session: Annotated[Session, Depends(get_sessi
     return BoardSchemaRead.model_validate(instance, from_attributes=True)
 
 
-@router.delete("/boards/{board_id}")
+@router.delete("/boards/{board_id}", dependencies=[Depends(is_author)])
 async def delete_board(board_id: int, session: Annotated[Session, Depends(get_session)]) -> BoardSchemaRead:
     instance = session.scalar(select(Board).where(Board.id==board_id))
     
@@ -76,7 +78,7 @@ async def delete_board(board_id: int, session: Annotated[Session, Depends(get_se
     return BoardSchemaRead.model_validate(instance, from_attributes=True)
 
 
-@router.post("/boards/{board_id}/media")
+@router.post("/boards/{board_id}/media", dependencies=[Depends(is_author_or_moderator)])
 async def set_board(board_id: int, session: Annotated[Session, Depends(get_session)], avatar: UploadFile) -> BoardSchemaRead:
     instance = session.scalar(select(Board).where(Board.id==board_id))
     
@@ -93,7 +95,7 @@ async def set_board(board_id: int, session: Annotated[Session, Depends(get_sessi
     return BoardSchemaRead.model_validate(instance, from_attributes=True)
 
 
-@router.delete("/boards/{board_id}/media")
+@router.delete("/boards/{board_id}/media", dependencies=[Depends(is_author_or_moderator)])
 async def set_board(board_id: int, session: Annotated[Session, Depends(get_session)]) -> BoardSchemaRead:
     instance = session.scalar(select(Board).where(Board.id==board_id))
     

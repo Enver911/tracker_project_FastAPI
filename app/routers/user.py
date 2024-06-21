@@ -63,5 +63,5 @@ async def user_login(session: Annotated[Session, Depends(get_session)], credenti
 
 @router.get("/users/profile", dependencies=[Depends(get_user)])
 async def some_url(session: Annotated[Session, Depends(get_session)], user_info: Annotated[dict, Depends(get_user)]) -> UserSchemaRead:
-    instance = session.scalar(select(User).where(User.username==user_info["username"]))
+    instance = session.scalar(select(User).where(User.email==user_info["email"]))
     return UserSchemaRead.model_validate(instance, from_attributes=True)
