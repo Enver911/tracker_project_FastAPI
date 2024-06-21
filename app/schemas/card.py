@@ -1,6 +1,8 @@
 from pydantic import BaseModel, Field
 from datetime import datetime
 
+from schemas.user import UserSchemaPublicInfo
+
 
 class CardSchemaUpdate(BaseModel):
     title: str | None = Field(max_length=100, default="No name")
@@ -15,3 +17,4 @@ class CardSchemaRead(CardSchemaUpdate):
     avatar: str | None = Field(max_length=100, default=None)
     created: datetime
     updated: datetime
+    subscribers: list[UserSchemaPublicInfo]

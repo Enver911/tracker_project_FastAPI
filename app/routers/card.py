@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Depends
-from fastapi import HTTPException, status
+from fastapi import APIRouter, Depends, UploadFile, HTTPException, status
 
 from schemas.card import CardSchemaUpdate, CardSchemaRead
 from models.card import Card
@@ -9,6 +8,10 @@ from typing import Annotated
 
 from sqlalchemy.orm import Session
 from sqlalchemy import select, delete
+
+from utils.media import Media
+
+import settings
 
 
 router = APIRouter(tags=["Card"])
@@ -67,3 +70,35 @@ async def delete_card(board_id: int, card_id: int, session: Annotated[Session, D
     return CardSchemaRead.model_validate(instance, from_attributes=True)
 
 
+@router.post("/{board_id}/cards/{card_id}/media")
+async def set_board(board_id: int, card_id: int, session: Annotated[Session, Depends(get_session)], avatar: UploadFile) -> CardSchemaRead:
+    instance = session.scalar(select(Card).where(Card.id==card_id))
+    
+    if instance is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query")
+    
+    file_path = f"{settings.STATICFILES_DIR}/cards/{card_id}/avatar/{avatar.filename}" 
+    Media.save(avatar.file, path=file_path)
+    
+    instance.avatar = file_path
+    session.add(instance)
+    session.commit()    
+
+    return CardSchemaRead.model_validate(instance, from_attributes=True)
+
+
+@router.delete("/{board_id}/cards/{card_id}/media")
+async def set_board(board_id: int, card_id: int, session: Annotated[Session, Depends(get_session)]) -> CardSchemaRead:
+    instance = session.scalar(select(Card).where(Card.id==card_id))
+    
+    if instance is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query")
+    
+    file_path = f"{settings.STATICFILES_DIR}/cards/{card_id}/avatar/" 
+    Media.clean(path=file_path)
+    
+    instance.avatar = None
+    session.add(instance)
+    session.commit()
+    
+    return CardSchemaRead.model_validate(instance, from_attributes=True)

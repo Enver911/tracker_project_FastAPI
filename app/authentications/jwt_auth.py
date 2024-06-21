@@ -11,7 +11,7 @@ import settings
 from datetime import datetime
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/users/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/users/login")
 
 
 async def get_user(token: Annotated[str, Depends(oauth2_scheme)]) -> dict:

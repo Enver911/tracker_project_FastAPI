@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile
 from fastapi import HTTPException, status
 
 from schemas.board import BoardSchemaRead, BoardSchemaUpdate
@@ -13,6 +13,12 @@ from sqlalchemy import select, delete
 from authentications.jwt_auth import get_user
 from models.user import User
 from models.follower import Follower
+
+import settings
+from utils.media import Media
+
+import os
+import glob
 
 router = APIRouter(tags=["Board"])
 
@@ -73,3 +79,35 @@ async def delete_board(board_id: int, session: Annotated[Session, Depends(get_se
     return BoardSchemaRead.model_validate(instance, from_attributes=True)
 
 
+@router.post("/boards/{board_id}/media")
+async def set_board(board_id: int, session: Annotated[Session, Depends(get_session)], avatar: UploadFile) -> BoardSchemaRead:
+    instance = session.scalar(select(Board).where(Board.id==board_id))
+    
+    if instance is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query")
+    
+    file_path = f"{settings.STATICFILES_DIR}/boards/{board_id}/avatar/{avatar.filename}" 
+    Media.save(avatar.file, path=file_path)
+    
+    instance.avatar = file_path
+    session.add(instance)
+    session.commit()
+    
+    return BoardSchemaRead.model_validate(instance, from_attributes=True)
+
+
+@router.delete("/boards/{board_id}/media")
+async def set_board(board_id: int, session: Annotated[Session, Depends(get_session)]) -> BoardSchemaRead:
+    instance = session.scalar(select(Board).where(Board.id==board_id))
+    
+    if instance is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query")
+    
+    file_path = f"{settings.STATICFILES_DIR}/boards/{board_id}/avatar/" 
+    Media.clean(path=file_path)
+    
+    instance.avatar = None
+    session.add(instance)
+    session.commit()
+    
+    return BoardSchemaRead.model_validate(instance, from_attributes=True)
