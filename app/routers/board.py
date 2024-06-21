@@ -12,13 +12,10 @@ from sqlalchemy import select, delete
 
 from authentications.jwt_auth import get_user
 from models.user import User
-from models.follower import Follower
 
 import settings
 from utils.media import Media
 
-import os
-import glob
 
 router = APIRouter(tags=["Board"])
 

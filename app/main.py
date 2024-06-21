@@ -1,4 +1,5 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, Request
+from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from routers import board, column, card, user, follower, subscriber
 
@@ -17,6 +18,13 @@ app_v1.include_router(card.router, dependencies=[Depends(get_user)])
 app_v1.include_router(user.router)
 app_v1.include_router(follower.router, dependencies=[Depends(get_user)])
 app_v1.include_router(subscriber.router, dependencies=[Depends(get_user)])
+
+@app.get("/")
+def main_page(request: Request):
+    print(app.root_path)
+    return RedirectResponse(url="/api/v1/docs")
+
+    
 
 
 #add permission
