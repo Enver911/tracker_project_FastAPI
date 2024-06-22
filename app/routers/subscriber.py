@@ -31,7 +31,7 @@ async def get_follower_list(board_id: int, card_id: int, session: Annotated[Sess
     board = session.scalar(select(Board).where(Board.id==board_id))
     board_users = board.followers + [board.author]
     
-    user = session.scalar(select(User).where(User.id==subscriber_schema.user_id))
+    user = session.scalar(select(User).where(User.username==subscriber_schema.username))
     
     if user is None or user not in board_users:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User wasn't found")
@@ -44,7 +44,7 @@ async def get_follower_list(board_id: int, card_id: int, session: Annotated[Sess
     if user in card.subscribers:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User already was subscribed to the card")
     
-    instance = Subscriber(card_id=card_id, **dict(subscriber_schema))
+    instance = Subscriber(card_id=card_id, user_id=user.id)
     session.add(instance)
     session.commit()
     

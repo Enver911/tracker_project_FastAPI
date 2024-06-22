@@ -25,6 +25,10 @@ router = APIRouter(tags=["Board"])
 @router.get("/boards")
 async def get_board_list(session: Annotated[Session, Depends(get_session)], user_info: Annotated[dict, Depends(get_user)]) -> list[BoardSchemaRead]:
     user = session.scalar(select(User).where(User.id==user_info["id"]))
+    
+    if user is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User wasn't found")
+    
     instances = user.boards + user.follows
     return [BoardSchemaRead.model_validate(instance, from_attributes=True) for instance in instances]
 

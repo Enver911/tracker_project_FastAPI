@@ -20,10 +20,8 @@ async def is_author_or_moderator(request: Request, board_id: int, session: Annot
     
     if board is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query")
-    
-    print(board.__dict__)
-    
-    follower = session.scalar(select(Follower).where(Follower.user_id==user_info["id"], Follower.board_id==board_id))
+     
+    follower = session.scalar(select(Follower).where(Follower.user_id==user_info["id"], Follower.board_id==board.id))
     
     if request.method in SAFE_METHODS:
         if board.author.id == user_info["id"] or follower: # if author or follower

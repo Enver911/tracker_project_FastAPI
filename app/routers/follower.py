@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 from models.follower import Follower
 from models.board import Board
 from models.user import User
+from models.subscriber import Subscriber
 
 from schemas.follower import FollowerSchemaRead, FollowerSchemaCreate, FollowerSchemaUpdate
 
@@ -25,7 +26,7 @@ async def get_follower_list(board_id: int, session: Annotated[Session, Depends(g
 
 @router.post("/{board_id}/followers")
 async def get_follower_list(board_id: int, session: Annotated[Session, Depends(get_session)], follower_schema: FollowerSchemaCreate) -> FollowerSchemaRead:
-    user = session.scalar(select(User).where(User.id==follower_schema.user_id))
+    user = session.scalar(select(User).where(User.username==follower_schema.username))
     
     if user is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User wasn't found")
@@ -37,7 +38,7 @@ async def get_follower_list(board_id: int, session: Annotated[Session, Depends(g
     elif user == board.author:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="That user is author of the board")
     
-    instance = Follower(board_id=board_id, **dict(follower_schema))
+    instance = Follower(board_id=board_id, user_id=user.id)
     session.add(instance)
     session.commit()
     
@@ -66,6 +67,8 @@ async def get_follower_list(board_id: int, follower_id: int, session: Annotated[
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query") 
     
     session.execute(delete(Follower).where(Follower.id==follower_id))
+    session.execute(delete(Subscriber).where(Subscriber.user_id==instance.user_id))
+    
     session.commit()
     
     return FollowerSchemaRead.model_validate(instance, from_attributes=True)

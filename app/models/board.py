@@ -19,4 +19,3 @@ class Board(Base):
     author = relationship("User", back_populates="boards")
     followers = relationship("User", secondary=Follower.__table__, back_populates="follows")
     columns = relationship("Column", back_populates="board")
-    

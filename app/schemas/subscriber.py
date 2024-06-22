@@ -1,9 +1,10 @@
-from pydantic import BaseModel
-
+from pydantic import BaseModel, Field
+from schemas.user import UserSchemaPublicInfo
 
 class SubscriberSchemaUpdate(BaseModel):
-    user_id: int
+    username: str = Field(max_length=30)
 
-class SubscriberSchemaRead(SubscriberSchemaUpdate):
+class SubscriberSchemaRead(BaseModel):
     id: int
     card_id: int
+    user: UserSchemaPublicInfo

@@ -14,5 +14,5 @@ class Follower(Base):
     
     permission = Column(String(30), default=PERMISSIONS["reader"])
     
-    user = relationship("User")
-    board = relationship("Board")
+    user = relationship("User", viewonly=True)
+    board = relationship("Board", viewonly=True)
