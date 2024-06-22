@@ -9,7 +9,7 @@ class Board(Base):
     __tablename__ = "board" 
     
     id = Column(Integer, primary_key=True)
-    author_email = Column(String(30), ForeignKey("user.email", ondelete="CASCADE"))
+    author_id = Column(String(30), ForeignKey("user.id", ondelete="CASCADE"))
     
     title = Column(String(100), default="No name")
     description = Column(Text(1000), nullable=True)

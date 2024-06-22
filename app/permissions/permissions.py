@@ -21,13 +21,15 @@ async def is_author_or_moderator(request: Request, board_id: int, session: Annot
     if board is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query")
     
-    follower = session.scalar(select(Follower).where(Follower.user_email==user_info["email"], Follower.board_id==board_id))
+    print(board.__dict__)
+    
+    follower = session.scalar(select(Follower).where(Follower.user_id==user_info["id"], Follower.board_id==board_id))
     
     if request.method in SAFE_METHODS:
-        if board.author.email == user_info["email"] or follower: # if author or follower
+        if board.author.id == user_info["id"] or follower: # if author or follower
             return user_info
     else:
-        if board.author.email == user_info["email"] or (follower and follower.permission==PERMISSIONS["moderator"]): # if author or follower-moderator
+        if board.author.id == user_info["id"] or (follower and follower.permission==PERMISSIONS["moderator"]): # if author or follower-moderator
             return user_info
 
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No permission")
@@ -39,7 +41,7 @@ async def is_author(request: Request, board_id: int, session: Annotated[Session,
     if board is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="No matches for given query")
    
-    if board.author.email == user_info["email"]: # is author
+    if board.author.id == user_info["id"]: # is author
         return user_info
 
     raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No permission")

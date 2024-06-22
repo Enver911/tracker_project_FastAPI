@@ -55,7 +55,7 @@ async def user_login(session: Annotated[Session, Depends(get_session)], credenti
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Wrong username/email or password", headers={"WWW-Authenticate": "Bearer"})
     
     expires = (datetime.now() + settings.ACCESS_TOKEN_LIFETIME).timestamp()
-    encode_dict = {"username": instance.username, "email": instance.email, "expires": expires}
+    encode_dict = {"id": instance.id, "username": instance.username, "email": instance.email, "expires": expires}
     
     token = jwt.encode(claims=encode_dict, key=settings.SECRET_KEY, algorithm=settings.ALGORITHM)
     return JWT(access_token=token)
@@ -63,5 +63,5 @@ async def user_login(session: Annotated[Session, Depends(get_session)], credenti
 
 @router.get("/users/profile", dependencies=[Depends(get_user)])
 async def some_url(session: Annotated[Session, Depends(get_session)], user_info: Annotated[dict, Depends(get_user)]) -> UserSchemaRead:
-    instance = session.scalar(select(User).where(User.email==user_info["email"]))
+    instance = session.scalar(select(User).where(User.id==user_info["id"]))
     return UserSchemaRead.model_validate(instance, from_attributes=True)

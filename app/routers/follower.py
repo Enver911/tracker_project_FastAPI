@@ -17,7 +17,6 @@ from schemas.follower import FollowerSchemaRead, FollowerSchemaCreate, FollowerS
 router = APIRouter(tags=["Follower"])
 
 
-
 @router.get("/{board_id}/followers")
 async def get_follower_list(board_id: int, session: Annotated[Session, Depends(get_session)]) -> list[FollowerSchemaRead]:
     instances = session.scalars(select(Follower).where(Follower.board_id==board_id))
@@ -26,7 +25,7 @@ async def get_follower_list(board_id: int, session: Annotated[Session, Depends(g
 
 @router.post("/{board_id}/followers")
 async def get_follower_list(board_id: int, session: Annotated[Session, Depends(get_session)], follower_schema: FollowerSchemaCreate) -> FollowerSchemaRead:
-    user = session.scalar(select(User).where(User.email==follower_schema.user_email))
+    user = session.scalar(select(User).where(User.id==follower_schema.user_id))
     
     if user is None:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="User wasn't found")

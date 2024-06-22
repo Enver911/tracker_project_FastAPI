@@ -1,9 +1,9 @@
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field
 from typing import Literal
 
 
 class FollowerSchemaCreate(BaseModel):
-    user_email: EmailStr = Field(max_length=30)
+    user_id: int
     permission: Literal["reader", "moderator"] = Field(default="reader")
 
 class FollowerSchemaUpdate(BaseModel):

@@ -1,8 +1,8 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel
 
 
 class SubscriberSchemaUpdate(BaseModel):
-    user_email: EmailStr = Field(max_length=30)
+    user_id: int
 
 class SubscriberSchemaRead(SubscriberSchemaUpdate):
     id: int

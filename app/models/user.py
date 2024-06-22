@@ -8,8 +8,8 @@ from models.subscriber import Subscriber
 class User(Base):
     __tablename__ = "user"
     
-    email = Column(String(30), primary_key=True)
-    
+    id = Column(Integer, primary_key=True)
+    email = Column(String(30), unique=True)
     username = Column(String(30), unique=True)
     password = Column(String(30))
     avatar = Column(String(100), nullable=True)

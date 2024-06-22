@@ -24,7 +24,7 @@ router = APIRouter(tags=["Board"])
 
 @router.get("/boards")
 async def get_board_list(session: Annotated[Session, Depends(get_session)], user_info: Annotated[dict, Depends(get_user)]) -> list[BoardSchemaRead]:
-    user = session.scalar(select(User).where(User.email==user_info["email"]))
+    user = session.scalar(select(User).where(User.id==user_info["id"]))
     instances = user.boards + user.follows
     return [BoardSchemaRead.model_validate(instance, from_attributes=True) for instance in instances]
 
@@ -32,7 +32,7 @@ async def get_board_list(session: Annotated[Session, Depends(get_session)], user
 @router.post("/boards")
 async def add_board(session: Annotated[Session, Depends(get_session)], board_schema: BoardSchemaUpdate, user_info: Annotated[dict, Depends(get_user)]) -> BoardSchemaRead:
     instance = Board(**board_schema.model_dump())
-    instance.author_email = user_info["email"]
+    instance.author_id = user_info["id"]
     
     session.add(instance)
     session.commit()

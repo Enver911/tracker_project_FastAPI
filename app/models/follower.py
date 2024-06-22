@@ -9,7 +9,10 @@ class Follower(Base):
     __tablename__ = "follower"
     
     id = Column(Integer, primary_key=True)
-    user_email = Column(String(30), ForeignKey("user.email", ondelete="CASCADE"))
+    user_id = Column(String(30), ForeignKey("user.id", ondelete="CASCADE"))
     board_id = Column(Integer, ForeignKey("board.id", ondelete="CASCADE"))
     
     permission = Column(String(30), default=PERMISSIONS["reader"])
+    
+    user = relationship("User")
+    board = relationship("Board")

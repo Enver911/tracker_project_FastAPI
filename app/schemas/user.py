@@ -21,6 +21,7 @@ class UserSchemaUpdate(BaseModel):
     password2: str | None = Field(max_length=30, default=None) 
 
 class UserSchemaRead(BaseModel):
+    id: int
     email: EmailStr = Field(max_length=30)
     username: str = Field(max_length=30)
     avatar: str | None = Field(max_length=100, default=None)
