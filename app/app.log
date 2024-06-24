@@ -1,0 +1,160 @@
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[generated in 0.00264s] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[generated in 0.00269s] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[generated in 0.00212s] (1,)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[cached since 88.37s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[cached since 88.35s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[cached since 88.34s ago] (1,)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[cached since 88.7s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[cached since 88.68s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[cached since 88.67s ago] (1,)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[cached since 88.84s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[cached since 88.83s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[cached since 88.81s ago] (1,)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[cached since 88.98s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[cached since 88.96s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[cached since 88.95s ago] (1,)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[cached since 89.13s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[cached since 89.11s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[cached since 89.1s ago] (1,)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[cached since 89.26s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[cached since 89.25s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[cached since 89.23s ago] (1,)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[cached since 89.4s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[cached since 89.38s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[cached since 89.36s ago] (1,)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.username = ?
+[generated in 0.00168s] ('enver',)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[cached since 151.1s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[cached since 151.1s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[cached since 151.1s ago] (1,)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[cached since 241.7s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[cached since 241.7s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[cached since 241.6s ago] (1,)
+ROLLBACK
+BEGIN (implicit)
+SELECT user.id, user.email, user.username, user.password, user.avatar, user.firstname, user.lastname, user.is_active 
+FROM user 
+WHERE user.id = ?
+[cached since 260.5s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = board.author_id
+[cached since 260.5s ago] (1,)
+SELECT board.id AS board_id, board.author_id AS board_author_id, board.title AS board_title, board.description AS board_description, board.avatar AS board_avatar, board.background AS board_background, user_1.id AS user_1_id, user_1.email AS user_1_email, user_1.username AS user_1_username, user_1.password AS user_1_password, user_1.avatar AS user_1_avatar, user_1.firstname AS user_1_firstname, user_1.lastname AS user_1_lastname, user_1.is_active AS user_1_is_active, user_2.id AS user_2_id, user_2.email AS user_2_email, user_2.username AS user_2_username, user_2.password AS user_2_password, user_2.avatar AS user_2_avatar, user_2.firstname AS user_2_firstname, user_2.lastname AS user_2_lastname, user_2.is_active AS user_2_is_active 
+FROM follower, board LEFT OUTER JOIN user AS user_1 ON user_1.id = board.author_id LEFT OUTER JOIN (follower AS follower_1 JOIN user AS user_2 ON user_2.id = follower_1.user_id) ON board.id = follower_1.board_id 
+WHERE ? = follower.user_id AND board.id = follower.board_id
+[cached since 260.5s ago] (1,)
+ROLLBACK

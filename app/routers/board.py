@@ -18,18 +18,26 @@ from utils.media import Media
 from permissions.permissions import is_author_or_moderator, is_author
 from authentications.jwt_auth import get_user
 
+from sqlalchemy.orm import joinedload
+
 
 router = APIRouter(tags=["Board"])
 
 
 @router.get("/boards")
-async def get_board_list(session: Annotated[Session, Depends(get_session)], user_info: Annotated[dict, Depends(get_user)]) -> list[BoardSchemaRead]:
-    user = session.scalar(select(User).where(User.id==user_info["id"]))
+async def get_board_list(session: Annotated[Session, Depends(get_session)], user_info: Annotated[dict, Depends(get_user)]) -> list[BoardSchemaRead]: 
+    user = session.scalar(select(User).options(joinedload(User.boards, Board.author), 
+                                               joinedload(User.boards, Board.followers),
+                                               joinedload(User.follows, Board.author),
+                                               joinedload(User.follows, Board.followers)).where(User.id==user_info["id"]))
+                                               
+                                         
     
     if user is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User wasn't found")
-    
+       
     instances = user.boards + user.follows
+    
     return [BoardSchemaRead.model_validate(instance, from_attributes=True) for instance in instances]
 
 
